@@ -2,88 +2,34 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      #chatform { background: #000; padding: 3px; position:fixed; bottom: 0; width: 50%; }
-      #chatform input { border: 0; padding: 10px; width: 30%; margin-right: 0.5%; }
-      #chatform button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee;}
-      .chat{
-        width: 20%;
-        position: fixed;
-        right:0;
-        overflow-y: auto;
-        height: 87%;
-      }
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
-    </style>
-
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </head>
   <body>
-    <form>
-      <input id="p" autocomplete="off" placeholder="Your pseudo"><button id="button_pseudo_send">Send</button>
-    </form>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          <form>
+            <input id="p" autocomplete="off" placeholder="Your pseudo"><button id="button_pseudo_send">Send</button>
+          </form>
+        </div>
+      </div>
+
+
+
+
+    <canvas id="canvas-area"></canvas>
     <div class="chat">
       <div id="messages"></div>
         <form id="chatform" action="">
-          <input id="m" autocomplete="off" placeholder="Enter your answer here..." /><button id="button_chat_send">Send</button>
+          <input id="m" autocomplete="off" placeholder="Enter your answer here..." /><button id="button_chat_send"><span class="material-icons">send</span></button>
         </form>
     </div>
 
 
+
+
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io();
-      document.getElementById("button_pseudo_send").addEventListener("click", function(event){
-        event.preventDefault()
-        p = document.getElementById("p");
-        socket.emit('change username', p.value);
-        p.value = '';
-      });
-
-      document.getElementById("button_chat_send").addEventListener("click", function(event){
-        event.preventDefault()
-        m = document.getElementById("m");
-        p = document.getElementById("p");
-        socket.emit('chat message', m.value);
-        m.value = '';
-      });
-
-      socket.on('chat message', function(data){
-        chat_messages = document.getElementById("messages")
-        //shouldScroll = chat_messages.scrollTop + chat_messages.clientHeight === chat_messages.scrollHeight;
-
-        li = document.createElement('li')
-        li.textContent = data.user + ": " +data.message
-        chat_messages.append(li);
-
-        chat = document.getElementsByClassName("chat")[0]
-        console.log(chat.scrollTop, chat.clientHeight)
-        chat.scrollTop = chat_messages.clientHeight;
-        console.log(chat.scrollTop, chat.clientHeight)
-      });
-
-      socket.on('chat info', function(info){
-        chat_messages = document.getElementById("messages")
-        li = document.createElement('li')
-        li.textContent = info
-        chat_messages.append(li);
-      });
-
-      function scrollToBottom() {
-        chat_messages = document.getElementById("messages")
-        chat_messages.scrollTop = chat_messages.scrollHeight;
-      }
-
-      scrollToBottom();
-
-
-    </script>
+    <script src="js.js"></script>
   </body>
 </html>

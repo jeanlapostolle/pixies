@@ -6,6 +6,14 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/client/index.html');
 });
 
+app.get('/style.css', (req, res) => {
+  res.sendFile(__dirname + '/client/style.css');
+});
+
+app.get('/js.js', (req, res) => {
+  res.sendFile(__dirname + '/client/js.js');
+});
+
 io.on('connection', (socket) => {
   socket.username = "Anonymous"
 
@@ -20,6 +28,9 @@ io.on('connection', (socket) => {
     if (msg.replace(/\s+/g, '').length != 0){
       io.emit('chat message', {message: msg, user: socket.username});
     }
+  });
+  socket.on('drawing', (data) => {
+      socket.broadcast.emit('drawing', data);
   });
 });
 
